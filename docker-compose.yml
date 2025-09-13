@@ -1,0 +1,66 @@
+# DeepSpear AI Docker Compose Configuration
+# 
+# Full Docker setup with integrated PostgreSQL database
+# This configuration creates a complete isolated environment
+#
+
+services:
+  # Database
+  database:
+    image: postgres:16-alpine
+    container_name: deepspear_database
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - deepspear_network
+    restart: unless-stopped
+
+  # Backend API
+  backend:
+    build: ./server
+    container_name: deepspear_backend
+    depends_on:
+      - database
+    environment:
+      # Database connection using Docker service name
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@database:${DB_PORT}/${DB_NAME}
+      DEBUG: "true"
+      SECRET_KEY: ${SECRET_KEY}
+      ALLOWED_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+    volumes:
+      - ./server:/app
+      - ./server/uploads:/app/uploads
+    ports:
+      - "8000:8000"
+    networks:
+      - deepspear_network
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build: ./client
+    container_name: deepspear_frontend
+    environment:
+      REACT_APP_API_URL: http://localhost:8000
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    networks:
+      - deepspear_network
+    restart: unless-stopped
+
+networks:
+  deepspear_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
