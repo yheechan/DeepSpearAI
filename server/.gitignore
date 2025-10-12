@@ -75,6 +75,5 @@ Thumbs.db
 uploads/
 *.log
 .pytest_cache/
-models/
 *.pth
 *.pkl
