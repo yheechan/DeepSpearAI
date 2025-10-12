@@ -62,7 +62,7 @@ async def detect_fake_content(
             mime_type=file.content_type or "unknown",
             is_fake=detection_result["is_fake"],
             confidence_score=detection_result["confidence"],
-            processing_time=processing_time,
+            processing_time=round(processing_time, 4),
             model_version="v1.0",
             analysis_details=detection_result.get("details", "")
         )
@@ -72,7 +72,7 @@ async def detect_fake_content(
         db.refresh(db_result)
         
         # Schedule file cleanup after response is sent
-        background_tasks.add_task(cleanup_file, file_path)
+        # background_tasks.add_task(cleanup_file, file_path)
         
         return {
             "file_id": db_result.id,
@@ -136,7 +136,7 @@ async def get_detection_result(result_id: int, db: Session = Depends(get_db)):
         "filename": result.filename,
         "is_fake": result.is_fake,
         "confidence": result.confidence_score,
-        "processing_time": result.processing_time,
+        "processing_time": round(result.processing_time, 4),
         "model_version": result.model_version,
         "created_at": result.created_at.isoformat(),
         "file_size": result.file_size,
