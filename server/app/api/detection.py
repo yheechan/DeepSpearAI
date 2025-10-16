@@ -75,9 +75,39 @@ async def detect_fake_content(
         
         processing_time = time.time() - start_time
         
+        # Handle filename - generate meaningful name if it's "blob" or invalid
+        original_filename = file.filename or "unknown"
+        
+        # Log received filename for debugging
+        print(f"Received filename: '{original_filename}'")
+        
+        # Only generate fallback filename for truly problematic cases
+        if (not original_filename or 
+            original_filename.strip() == "" or 
+            original_filename in ["blob", "image", "unknown", "file"] or
+            original_filename.startswith("blob")):
+            
+            # Generate a meaningful filename based on timestamp and file type
+            file_extension = "jpg"  # Default extension
+            if file.content_type:
+                if "png" in file.content_type:
+                    file_extension = "png"
+                elif "webp" in file.content_type:
+                    file_extension = "webp"
+                elif "gif" in file.content_type:
+                    file_extension = "gif"
+                elif "bmp" in file.content_type:
+                    file_extension = "bmp"
+            
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            original_filename = f"uploaded_image_{timestamp}.{file_extension}"
+            print(f"Generated fallback filename: '{original_filename}'")
+        else:
+            print(f"Using original filename: '{original_filename}'")
+        
         # Save result to database
         db_result = DetectionResult(
-            filename=file.filename,
+            filename=original_filename,  # Use processed filename
             file_path=file_path,
             file_size=file.size or 0,
             mime_type=file.content_type or "unknown",
@@ -97,7 +127,7 @@ async def detect_fake_content(
         
         return {
             "file_id": db_result.id,
-            "filename": file.filename,
+            "filename": original_filename,  # Use processed filename
             "is_fake": detection_result["is_fake"],
             "confidence": detection_result["confidence"],
             "processing_time": round(processing_time, 3),

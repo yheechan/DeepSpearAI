@@ -36,15 +36,28 @@ const DetectionPage = () => {
         setError('이미지 처리 중...');
         const compressedFile = await imageCompression(file, options);
         
-        setSelectedFile(compressedFile);
+        // Preserve original filename by creating a new File object
+        const preservedFile = new File(
+          [compressedFile], 
+          file.name, // Use original filename
+          { 
+            type: compressedFile.type,
+            lastModified: Date.now()
+          }
+        );
+        
+        setSelectedFile(preservedFile);
         setError('');
         
         // Create preview URL with compressed file
-        const url = URL.createObjectURL(compressedFile);
+        const url = URL.createObjectURL(preservedFile);
         setPreviewUrl(url);
         
+        console.log('Original file name:', file.name);
         console.log('Original file size:', (file.size / 1024 / 1024).toFixed(2), 'MB');
-        console.log('Compressed file size:', (compressedFile.size / 1024 / 1024).toFixed(2), 'MB');
+        console.log('Compressed file size:', (preservedFile.size / 1024 / 1024).toFixed(2), 'MB');
+        console.log('Preserved filename:', preservedFile.name);
+        console.log('Preserved file type:', preservedFile.type);
         
       } catch (compressionError) {
         console.error('Image compression failed:', compressionError);
