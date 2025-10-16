@@ -38,15 +38,19 @@ const ResultPage = () => {
   }, [resultId]);
 
   const getConfidenceColor = (confidence) => {
-    if (confidence >= 0.8) return 'text-green-600';
+    // Since confidence represents fake probability, reverse the colors
+    // High fake probability (dangerous) = red, Low fake probability (safe) = green
+    if (confidence >= 0.8) return 'text-red-600';
     if (confidence >= 0.6) return 'text-yellow-600';
-    return 'text-red-600';
+    return 'text-green-600';
   };
 
   const getConfidenceBgColor = (confidence) => {
-    if (confidence >= 0.8) return 'bg-green-100 border-green-200';
+    // Since confidence represents fake probability, reverse the colors
+    // High fake probability (dangerous) = red, Low fake probability (safe) = green
+    if (confidence >= 0.8) return 'bg-red-100 border-red-200';
     if (confidence >= 0.6) return 'bg-yellow-100 border-yellow-200';
-    return 'bg-red-100 border-red-200';
+    return 'bg-green-100 border-green-200';
   };
 
   if (loading) {
@@ -149,8 +153,8 @@ const ResultPage = () => {
                   <div className="w-full bg-gray-200 rounded-full h-3">
                     <div
                       className={`h-3 rounded-full transition-all duration-500 ${
-                        result.confidence >= 0.8 ? 'bg-green-500' :
-                        result.confidence >= 0.6 ? 'bg-yellow-500' : 'bg-red-500'
+                        result.confidence >= 0.8 ? 'bg-red-500' :
+                        result.confidence >= 0.6 ? 'bg-yellow-500' : 'bg-green-500'
                       }`}
                       style={{ width: `${confidencePercentage}%` }}
                     />

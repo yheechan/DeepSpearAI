@@ -131,24 +131,6 @@ const DetectionPage = () => {
           </p>
         </div>
 
-        {/* Agreement Checkbox */}
-        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg max-w-2xl mx-auto">
-          <label className="flex items-start space-x-3 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={agreedToTerms}
-              onChange={(e) => setAgreedToTerms(e.target.checked)}
-              className="mt-1 h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <div className="text-sm text-gray-700">
-              <span className="font-medium">개인정보 처리 동의</span>
-              <p className="mt-1">
-                본 서비스에 업로드되는 이미지 파일 외에는 개인 정보를 수집하지 않으며, 업로드된 이미지는 AI기술 개선 및 가짜 콘텐츠 탐지 정확도 향상을 위한 딥스피어 AI의 "AI기반 가짜 콘텐츠 탐지 엔진 개발"에 활용될 수 있음에 동의합니다.
-              </p>
-            </div>
-          </label>
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Upload Section */}
           <div className="space-y-6">
@@ -226,6 +208,24 @@ const DetectionPage = () => {
                   </div>
                 </div>
               )}
+
+              {/* Agreement Checkbox */}
+              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <label className="flex items-start space-x-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={agreedToTerms}
+                    onChange={(e) => setAgreedToTerms(e.target.checked)}
+                    className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <div className="text-xs text-gray-700">
+                    <span className="font-medium">개인정보 처리 동의</span>
+                    <p className="mt-1">
+                      본 서비스에 업로드되는 이미지 파일 외에는 개인 정보를 수집하지 않으며, 업로드된 이미지는 AI기술 개선 및 가짜 콘텐츠 탐지 정확도 향상을 위한 딥스피어 AI의 "AI기반 가짜 콘텐츠 탐지 엔진 개발"에 활용될 수 있음에 동의합니다.
+                    </p>
+                  </div>
+                </label>
+              </div>
 
               {/* Action Buttons */}
               <div className="flex space-x-4">
