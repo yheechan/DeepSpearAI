@@ -21,7 +21,7 @@ ml_service = FakeDetectionService()
 async def detect_fake_content(
     background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
-    user_label: str = Form(None),  # Add user_label as form parameter
+    user_label: str = Form(None),  # 'fake', 'real', or 'unknown'
     db: Session = Depends(get_db)
 ):
     """
@@ -83,10 +83,17 @@ async def detect_fake_content(
         print(f"Received filename: '{original_filename}'")
         print(f"Received user_label: '{user_label}'")
         
-        # Convert user_label string to boolean
+        # Convert user_label string to boolean values
         user_is_fake = None
+        user_knows = None
+        
         if user_label:
-            user_is_fake = user_label.lower() == 'fake'  # True if fake, False if real
+            if user_label.lower() == 'unknown':
+                user_knows = False  # User doesn't know the answer
+                user_is_fake = None  # No prediction provided
+            elif user_label.lower() in ['fake', 'real']:
+                user_knows = True  # User knows the answer
+                user_is_fake = user_label.lower() == 'fake'  # True if fake, False if real
         
         # Only generate fallback filename for truly problematic cases
         if (not original_filename or 
@@ -123,7 +130,8 @@ async def detect_fake_content(
             processing_time=round(processing_time, 4),
             model_version=model_version,  # Use extracted model_version from details
             analysis_details=detection_result.get("details", ""),
-            user_is_fake=user_is_fake  # Save user's prediction as boolean
+            user_is_fake=user_is_fake,  # Save user's prediction as boolean
+            user_knows=user_knows  # Save whether user knows the answer
         )
         
         db.add(db_result)
@@ -200,5 +208,6 @@ async def get_detection_result(result_id: int, db: Session = Depends(get_db)):
         "created_at": result.created_at.isoformat(),
         "file_size": result.file_size,
         "mime_type": result.mime_type,
-        "user_is_fake": result.user_is_fake
+        "user_is_fake": result.user_is_fake,
+        "user_knows": result.user_knows
     }

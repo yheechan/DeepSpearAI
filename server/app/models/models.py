@@ -17,7 +17,8 @@ class DetectionResult(Base):
     processing_time = Column(Float, nullable=False)  # seconds
     
     # User feedback
-    user_is_fake = Column(Boolean, nullable=True)  # True if user thinks it's fake, False if real, null if not provided
+    user_is_fake = Column(Boolean, nullable=True)  # True if user thinks it's fake, False if real, null if unknown
+    user_knows = Column(Boolean, nullable=True)  # True if user knows the answer, False if guessing, null if not provided
     
     # Additional metadata
     model_version = Column(String, default="v1.0")

@@ -242,15 +242,15 @@ const DetectionPage = () => {
                 </label>
               </div>
 
-              {/* User Label Selection */}
-              <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+              {/* User Knowledge Selection */}
+              <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
                 <div className="text-xs text-gray-700 mb-3">
-                  <span className="font-medium">이미지 예상 결과</span>
+                  <span className="font-medium">이미지 정답 확인</span>
                   <p className="mt-1">
-                    분석하기 전에 이 이미지가 진짜인지 가짜인지 예상해보세요. (모델 개선에 도움됩니다)
+                    분석하기 전에 이 이미지의 정답을 알고 계신가요? 정답을 알고 계시다면 진짜 또는 가짜를 선택해 주시고, 모르시겠다면 '모름'을 선택해 주세요. (모델 개선에 도움됩니다)
                   </p>
                 </div>
-                <div className="flex space-x-4">
+                <div className="flex flex-wrap gap-4">
                   <label className="flex items-center cursor-pointer">
                     <input
                       type="radio"
@@ -272,6 +272,17 @@ const DetectionPage = () => {
                       className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300"
                     />
                     <span className="ml-2 text-sm text-red-700 font-medium">가짜</span>
+                  </label>
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="userLabel"
+                      value="unknown"
+                      checked={userLabel === 'unknown'}
+                      onChange={(e) => setUserLabel(e.target.value)}
+                      className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300"
+                    />
+                    <span className="ml-2 text-sm text-gray-700 font-medium">모름</span>
                   </label>
                 </div>
               </div>
