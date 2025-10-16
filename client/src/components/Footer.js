@@ -12,7 +12,7 @@ const Footer = () => {
               <img 
                 src="/images/logos/logo_transparent.png" 
                 alt="딥스피어 AI 로고" 
-                className="h-12 w-12 object-contain"
+                className="h-10 w-10 object-contain"
               />
               <span className="text-xl font-bold">DeepSpear AI</span>
             </div>
