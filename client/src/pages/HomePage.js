@@ -18,7 +18,7 @@ const HomePage = () => {
     {
       icon: <Eye className="h-8 w-8" />,
       title: "상세한 인사이트",
-      description: "신뢰도 점수와 탐지 결과에 대한 자세한 설명이 포함된 종합적인 분석을 제공합니다."
+      description: "이미지 가짜 확률과 탐지 결과에 대한 자세한 설명이 포함된 종합적인 분석을 제공합니다."
     }
   ];
 

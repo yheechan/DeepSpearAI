@@ -145,7 +145,7 @@ const ResultPage = () => {
 
                 <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700">신뢰도 점수</span>
+                    <span className="text-sm font-medium text-gray-700">가짜일 가능성(확률)</span>
                     <span className={`text-2xl font-bold ${getConfidenceColor(result.confidence)}`}>
                       {confidencePercentage}%
                     </span>
