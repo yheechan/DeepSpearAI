@@ -2,8 +2,7 @@
 
 ```
 docker exec -it deepspear_database psql -U deepspear -d deepspear
-docker cp deepspear_backend:/app/uploads/ ./
-docker exec deepspear_backend rm -rf /app/uploads/*
+ssh -N -L 5433:localhost:5432 ubuntu@ec2-52-79-67-108.ap-northeast-2.compute.amazonaws.com -i "deepspear2.pem"
 ```
 
 🛡️ **"Don't get juked by AI"** - Advanced AI-powered fake content detection service.
