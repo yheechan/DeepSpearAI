@@ -16,6 +16,9 @@ class DetectionResult(Base):
     confidence_score = Column(Float, nullable=False)  # 0.0 to 1.0
     processing_time = Column(Float, nullable=False)  # seconds
     
+    # User feedback
+    user_is_fake = Column(Boolean, nullable=True)  # True if user thinks it's fake, False if real, null if not provided
+    
     # Additional metadata
     model_version = Column(String, default="v1.0")
     created_at = Column(DateTime(timezone=True), server_default=func.now())

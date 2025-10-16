@@ -3,6 +3,7 @@
 ```
 docker exec -it deepspear_database psql -U deepspear -d deepspear
 docker cp deepspear_backend:/app/uploads/ ./
+docker exec deepspear_backend rm -rf /app/uploads/*
 ```
 
 🛡️ **"Don't get juked by AI"** - Advanced AI-powered fake content detection service.

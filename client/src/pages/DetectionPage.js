@@ -13,6 +13,7 @@ const DetectionPage = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [userLabel, setUserLabel] = useState(''); // 'fake' or 'real'
   
   const navigate = useNavigate();
 
@@ -102,7 +103,7 @@ const DetectionPage = () => {
         });
       }, 200);
 
-      const result = await uploadImage(selectedFile);
+      const result = await uploadImage(selectedFile, userLabel);
       
       clearInterval(progressInterval);
       setUploadProgress(100);
@@ -126,6 +127,7 @@ const DetectionPage = () => {
     setError('');
     setSelectedFile(null);
     setAgreedToTerms(false);
+    setUserLabel('');
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
       setPreviewUrl('');
@@ -240,11 +242,45 @@ const DetectionPage = () => {
                 </label>
               </div>
 
+              {/* User Label Selection */}
+              <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="text-xs text-gray-700 mb-3">
+                  <span className="font-medium">이미지 예상 결과</span>
+                  <p className="mt-1">
+                    분석하기 전에 이 이미지가 진짜인지 가짜인지 예상해보세요. (모델 개선에 도움됩니다)
+                  </p>
+                </div>
+                <div className="flex space-x-4">
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="userLabel"
+                      value="real"
+                      checked={userLabel === 'real'}
+                      onChange={(e) => setUserLabel(e.target.value)}
+                      className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
+                    />
+                    <span className="ml-2 text-sm text-green-700 font-medium">진짜</span>
+                  </label>
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="userLabel"
+                      value="fake"
+                      checked={userLabel === 'fake'}
+                      onChange={(e) => setUserLabel(e.target.value)}
+                      className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300"
+                    />
+                    <span className="ml-2 text-sm text-red-700 font-medium">가짜</span>
+                  </label>
+                </div>
+              </div>
+
               {/* Action Buttons */}
               <div className="flex space-x-4">
                 <button
                   onClick={handleUpload}
-                  disabled={!selectedFile || !agreedToTerms || uploadState === 'uploading'}
+                  disabled={!selectedFile || !agreedToTerms || !userLabel || uploadState === 'uploading'}
                   className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                 >
                   {uploadState === 'uploading' ? (

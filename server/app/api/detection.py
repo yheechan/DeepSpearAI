@@ -1,4 +1,4 @@
-from fastapi import APIRouter, File, UploadFile, HTTPException, Depends, BackgroundTasks
+from fastapi import APIRouter, File, UploadFile, HTTPException, Depends, BackgroundTasks, Form
 from sqlalchemy.orm import Session
 from typing import Dict, Any
 import os
@@ -21,6 +21,7 @@ ml_service = FakeDetectionService()
 async def detect_fake_content(
     background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
+    user_label: str = Form(None),  # Add user_label as form parameter
     db: Session = Depends(get_db)
 ):
     """
@@ -80,6 +81,12 @@ async def detect_fake_content(
         
         # Log received filename for debugging
         print(f"Received filename: '{original_filename}'")
+        print(f"Received user_label: '{user_label}'")
+        
+        # Convert user_label string to boolean
+        user_is_fake = None
+        if user_label:
+            user_is_fake = user_label.lower() == 'fake'  # True if fake, False if real
         
         # Only generate fallback filename for truly problematic cases
         if (not original_filename or 
@@ -115,7 +122,8 @@ async def detect_fake_content(
             confidence_score=detection_result["confidence"],
             processing_time=round(processing_time, 4),
             model_version=model_version,  # Use extracted model_version from details
-            analysis_details=detection_result.get("details", "")
+            analysis_details=detection_result.get("details", ""),
+            user_is_fake=user_is_fake  # Save user's prediction as boolean
         )
         
         db.add(db_result)
@@ -191,5 +199,6 @@ async def get_detection_result(result_id: int, db: Session = Depends(get_db)):
         "model_version": result.model_version,
         "created_at": result.created_at.isoformat(),
         "file_size": result.file_size,
-        "mime_type": result.mime_type
+        "mime_type": result.mime_type,
+        "user_is_fake": result.user_is_fake
     }

@@ -43,11 +43,15 @@ api.interceptors.response.use(
 /**
  * Upload an image for fake content detection
  * @param {File} file - The image file to upload
+ * @param {string} userLabel - User's prediction: 'fake' or 'real'
  * @returns {Promise} - Promise resolving to detection result
  */
-export const uploadImage = async (file) => {
+export const uploadImage = async (file, userLabel = null) => {
   const formData = new FormData();
   formData.append('file', file);
+  if (userLabel) {
+    formData.append('user_label', userLabel);
+  }
 
   try {
     const response = await api.post('/detect', formData, {
