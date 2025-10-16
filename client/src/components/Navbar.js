@@ -10,34 +10,37 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+    <nav className="bg-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img 
-              src="/images/logos/logo_transparent.png" 
+              src="/images/logos/long_logo.png" 
               alt="딥스피어 AI 로고" 
-              className="h-10 w-10 object-contain"
+              className="h-12 w-30 object-contain"
             />
-            <span className="text-xl font-bold text-gray-900">
-              DeepSpear AI
-            </span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link
-              to="/"
-              className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium"
+              to="/how-to-use"
+              className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-pretendard font-medium"
             >
-              홈
+              AI 생성 탐지
             </Link>
             <Link
-              to="/detect"
-              className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium"
+              to="/price"
+              className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium"
             >
-              가짜 콘텐츠 탐지
+              가격 안내
+            </Link>
+            <Link
+              to="/team-introduce"
+              className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium"
+            >
+              팀소개
             </Link>
           </div>
 
