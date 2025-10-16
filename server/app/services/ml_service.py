@@ -1,3 +1,5 @@
+import requests
+from pathlib import Path
 import torch
 import torch.nn as nn
 from torchvision import transforms
@@ -72,10 +74,42 @@ class FakeDetectionService:
     
     def preprocess_image(self, image_path: str) -> torch.Tensor:
         """
-        Preprocess image for model input.
+        Preprocess image for model input with EXIF orientation correction.
         """
         try:
-            image = Image.open(image_path).convert('RGB')
+            image = Image.open(image_path)
+            
+            # Handle EXIF orientation for mobile photos
+            try:
+                # Get EXIF data
+                if hasattr(image, '_getexif') and image._getexif() is not None:
+                    exif = image._getexif()
+                    orientation_key = 274  # EXIF orientation tag
+                    
+                    if orientation_key in exif:
+                        orientation = exif[orientation_key]
+                        # Apply rotation based on EXIF orientation
+                        if orientation == 3:
+                            image = image.rotate(180, expand=True)
+                        elif orientation == 6:
+                            image = image.rotate(270, expand=True)
+                        elif orientation == 8:
+                            image = image.rotate(90, expand=True)
+                        # orientations 2, 4, 5, 7 involve flipping, less common
+                        elif orientation == 2:
+                            image = image.transpose(Image.FLIP_LEFT_RIGHT)
+                        elif orientation == 4:
+                            image = image.rotate(180, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+                        elif orientation == 5:
+                            image = image.rotate(270, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+                        elif orientation == 7:
+                            image = image.rotate(90, expand=True).transpose(Image.FLIP_LEFT_RIGHT)
+            except (AttributeError, KeyError, TypeError):
+                # If EXIF processing fails, continue with original image
+                pass
+            
+            # Convert to RGB (removes alpha channel if present)
+            image = image.convert('RGB')
             return self.transform(image).unsqueeze(0)  # Add batch dimension
         except Exception as e:
             raise ValueError(f"Error preprocessing image: {e}")
@@ -155,3 +189,90 @@ class FakeDetectionService:
             "version": "v1.0",
             "status": "Template - Replace with actual model"
         }
+    
+    async def test_single_image(self, image_path: str, api_url: str = "http://localhost:8000"):
+        """
+        Test the API with a single image
+        
+        Args:
+            image_path: Path to image file
+            api_url: Base URL of the API
+        """
+        details = {
+            "model_version": "clip.MVP.v1.0",
+            "analysis_method": "clip detection",
+            "features_analyzed": ["texture_patterns", "compression_artifacts", "color_distribution"],
+            "processing_notes": "Template implementation - replace with actual model"
+        }
+        endpoint = f"{api_url}/predict"
+        
+        # Check if file exists
+        if not Path(image_path).exists():
+            return {
+                "is_fake": False,
+                "confidence": 0.0,
+                "details": f"Error during prediction: file not found: {image_path}"
+            }
+        
+        # Prepare file upload
+        with open(image_path, 'rb') as f:
+            files = {'file': (Path(image_path).name, f, 'image/jpeg')}
+            
+            # print(f"Sending request to {endpoint}...")
+            # print(f"Image: {image_path}")
+            # print("-" * 60)
+            
+            try:
+                response = requests.post(endpoint, files=files)
+                
+                if response.status_code == 200:
+                    result = response.json()
+                    # print("✓ Success!")
+                    # print("\nPrediction Results:")
+                    # print("=" * 60)
+                    
+                    pred = result['prediction']
+                    # print(f"Label:              {pred['label']}")
+                    # print(f"Is Fake:            {pred['is_fake']}")
+                    # print(f"Fake Probability:   {pred['fake_probability']:.2%}")
+                    # print(f"Real Probability:   {pred['real_probability']:.2%}")
+                    # print(f"Confidence:         {pred['confidence']:.2f}%")
+                    
+                    # print("\nFile Info:")
+                    # print("-" * 60)
+                    file_info = result['file_info']
+                    # print(f"Filename:           {file_info['filename']}")
+                    # print(f"Content Type:       {file_info['content_type']}")
+                    # print(f"Size:               {file_info['size']}")
+
+
+                    return {
+                        "is_fake": pred['is_fake'],
+                        "confidence": pred['fake_probability'],
+                        "details": str(details)
+                    }
+                    
+                else:
+                    # print(f"✗ Error: {response.status_code}")
+                    # print(response.json())
+                    return {
+                        "is_fake": False,
+                        "confidence": 0.0,
+                        "details": f"Error during prediction: {response.status_code}"
+                    }
+                    
+            except requests.exceptions.ConnectionError:
+                # print("✗ Error: Could not connect to API server")
+                # print(f"Make sure the server is running at {api_url}")
+                return {
+                    "is_fake": False,
+                    "confidence": 0.0,
+                    "details": "Error during prediction: could not connect to API server"
+                }
+            except Exception as e:
+                # print(f"✗ Error: {str(e)}")
+                return {
+                    "is_fake": False,
+                    "confidence": 0.0,
+                    "details": f"Error during prediction: {str(e)}"
+                }

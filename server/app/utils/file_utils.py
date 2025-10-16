@@ -6,7 +6,7 @@ from typing import Dict, List
 from pathlib import Path
 
 # Configuration
-MAX_FILE_SIZE = int(os.getenv("MAX_UPLOAD_SIZE", 10485760))  # 10MB default
+MAX_FILE_SIZE = int(os.getenv("MAX_UPLOAD_SIZE", 52428800))  # 50MB default for mobile photos
 ALLOWED_EXTENSIONS = os.getenv("ALLOWED_EXTENSIONS", "jpg,jpeg,png,gif,bmp,webp").split(",")
 UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
 
@@ -30,16 +30,7 @@ def validate_file(file: UploadFile) -> Dict[str, any]:
             "error": f"File size ({file.size / (1024 * 1024):.1f}MB) exceeds maximum allowed size ({max_size_mb}MB)"
         }
     
-    # Check file extension
-    if file.filename:
-        file_extension = file.filename.split(".")[-1].lower()
-        if file_extension not in ALLOWED_EXTENSIONS:
-            return {
-                "valid": False,
-                "error": f"File type '.{file_extension}' not allowed. Allowed types: {', '.join(ALLOWED_EXTENSIONS)}"
-            }
-    
-    # Check MIME type
+    # Check MIME type (primary validation for mobile compatibility)
     if file.content_type:
         allowed_mime_types = [
             "image/jpeg", "image/jpg", "image/png", "image/gif", 
@@ -50,6 +41,19 @@ def validate_file(file: UploadFile) -> Dict[str, any]:
                 "valid": False,
                 "error": f"MIME type '{file.content_type}' not allowed"
             }
+    
+    # Check file extension (fallback validation, but allow mobile-friendly cases)
+    if file.filename:
+        file_extension = file.filename.split(".")[-1].lower()
+        # Allow common mobile browser filename patterns
+        mobile_friendly_patterns = ["blob", "image"]
+        if file_extension not in ALLOWED_EXTENSIONS and file_extension not in mobile_friendly_patterns:
+            # If MIME type is valid but extension isn't, only warn if no valid MIME type
+            if not file.content_type or file.content_type not in allowed_mime_types:
+                return {
+                    "valid": False,
+                    "error": f"File type '.{file_extension}' not allowed. Allowed types: {', '.join(ALLOWED_EXTENSIONS)}"
+                }
     
     return {"valid": True, "error": None}
 
@@ -69,8 +73,26 @@ async def save_uploaded_file(file: UploadFile, file_id: str) -> str:
     upload_dir = Path(UPLOAD_FOLDER)
     upload_dir.mkdir(exist_ok=True)
     
-    # Generate unique filename
-    original_extension = file.filename.split(".")[-1].lower() if file.filename else "jpg"
+    # Generate unique filename with mobile-friendly extension handling
+    original_extension = "jpg"  # Default extension
+    
+    if file.filename and "." in file.filename:
+        file_extension = file.filename.split(".")[-1].lower()
+        if file_extension in ALLOWED_EXTENSIONS:
+            original_extension = file_extension
+    
+    # If filename doesn't give us a good extension, try to infer from MIME type
+    if original_extension == "jpg" and file.content_type:
+        mime_to_ext = {
+            "image/jpeg": "jpg",
+            "image/jpg": "jpg", 
+            "image/png": "png",
+            "image/gif": "gif",
+            "image/bmp": "bmp",
+            "image/webp": "webp"
+        }
+        original_extension = mime_to_ext.get(file.content_type, "jpg")
+    
     filename = f"{file_id}.{original_extension}"
     file_path = upload_dir / filename
     

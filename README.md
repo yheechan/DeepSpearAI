@@ -1,5 +1,10 @@
 # DeepSpear AI - Fake Content Detection Service
 
+```
+docker exec -it deepspear_database psql -U deepspear -d deepspear
+docker cp deepspear_backend:/app/uploads/ ./
+```
+
 🛡️ **"Don't get juked by AI"** - Advanced AI-powered fake content detection service.
 
 DeepSpear AI is a comprehensive web service for detecting AI-generated and manipulated content using cutting-edge deep learning technology. The service provides real-time analysis with detailed confidence scores and explanations.

@@ -4,6 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import { motion } from 'framer-motion';
 import { Upload, Image as ImageIcon, AlertCircle, Loader2, CheckCircle } from 'lucide-react';
 import { uploadImage } from '../services/api';
+import imageCompression from 'browser-image-compression';
 
 const DetectionPage = () => {
   const [uploadState, setUploadState] = useState('idle'); // idle, uploading, success, error
@@ -14,7 +15,7 @@ const DetectionPage = () => {
   
   const navigate = useNavigate();
 
-  const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+  const onDrop = useCallback(async (acceptedFiles, rejectedFiles) => {
     if (rejectedFiles.length > 0) {
       setError('Please upload a valid image file (JPG, PNG, GIF, BMP, WEBP)');
       return;
@@ -22,12 +23,36 @@ const DetectionPage = () => {
 
     const file = acceptedFiles[0];
     if (file) {
-      setSelectedFile(file);
-      setError('');
-      
-      // Create preview URL
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
+      try {
+        // Compress image for mobile compatibility
+        const options = {
+          maxSizeMB: 2,          // Reduce to 2MB max
+          maxWidthOrHeight: 1920, // Max dimensions for mobile
+          useWebWorker: true,     // Use web worker for better performance
+          fileType: 'image/jpeg', // Convert to JPEG for better compression
+        };
+
+        setError('Processing image...');
+        const compressedFile = await imageCompression(file, options);
+        
+        setSelectedFile(compressedFile);
+        setError('');
+        
+        // Create preview URL with compressed file
+        const url = URL.createObjectURL(compressedFile);
+        setPreviewUrl(url);
+        
+        console.log('Original file size:', (file.size / 1024 / 1024).toFixed(2), 'MB');
+        console.log('Compressed file size:', (compressedFile.size / 1024 / 1024).toFixed(2), 'MB');
+        
+      } catch (compressionError) {
+        console.error('Image compression failed:', compressionError);
+        // Fallback to original file if compression fails
+        setSelectedFile(file);
+        setError('');
+        const url = URL.createObjectURL(file);
+        setPreviewUrl(url);
+      }
     }
   }, []);
 
@@ -37,7 +62,8 @@ const DetectionPage = () => {
       'image/*': ['.jpeg', '.jpg', '.png', '.gif', '.bmp', '.webp']
     },
     maxFiles: 1,
-    maxSize: 10 * 1024 * 1024, // 10MB
+    maxSize: 50 * 1024 * 1024, // 50MB to handle large mobile photos
+    multiple: false,
   });
 
   const handleUpload = async () => {

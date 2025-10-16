@@ -3,10 +3,8 @@ import axios from 'axios';
 // Create axios instance with default configuration
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000',
-  timeout: 30000, // 30 seconds timeout for file uploads
-  headers: {
-    'Content-Type': 'multipart/form-data',
-  },
+  timeout: 120000, // 2 minutes timeout for mobile compatibility
+  withCredentials: false, // Explicitly set for mobile browsers
 });
 
 // Request interceptor for logging
@@ -52,7 +50,7 @@ export const uploadImage = async (file) => {
   formData.append('file', file);
 
   try {
-    const response = await api.post('/api/v1/detect', formData, {
+    const response = await api.post('/detect', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -79,7 +77,7 @@ export const uploadImage = async (file) => {
  */
 export const getDetectionResult = async (resultId) => {
   try {
-    const response = await api.get(`/api/v1/result/${resultId}`, {
+    const response = await api.get(`/result/${resultId}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -100,7 +98,7 @@ export const getDetectionResult = async (resultId) => {
  */
 export const getDetectionHistory = async (limit = 10, offset = 0) => {
   try {
-    const response = await api.get('/api/v1/history', {
+    const response = await api.get('/history', {
       params: { limit, offset },
       headers: {
         'Content-Type': 'application/json',
@@ -120,7 +118,7 @@ export const getDetectionHistory = async (limit = 10, offset = 0) => {
  */
 export const checkHealth = async () => {
   try {
-    const response = await api.get('/api/v1/health', {
+    const response = await api.get('/health', {
       headers: {
         'Content-Type': 'application/json',
       },

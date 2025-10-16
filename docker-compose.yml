@@ -33,7 +33,7 @@ services:
       DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@database:${DB_PORT}/${DB_NAME}
       DEBUG: "true"
       SECRET_KEY: ${SECRET_KEY}
-      ALLOWED_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+      ALLOWED_ORIGINS: http://localhost:3000,http://127.0.0.1:3000,http://deepspear.ai,https://deepspear.ai,http://www.deepspear.ai,https://www.deepspear.ai
     volumes:
       - ./server:/app
       - ./server/uploads:/app/uploads
@@ -48,10 +48,7 @@ services:
     build: ./client
     container_name: deepspear_frontend
     environment:
-      REACT_APP_API_URL: http://localhost:8000
-    volumes:
-      - ./client:/app
-      - /app/node_modules
+      REACT_APP_API_URL: http://deepspear.ai/api
     ports:
       - "3000:3000"
     networks:

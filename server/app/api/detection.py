@@ -5,6 +5,7 @@ import os
 import time
 import uuid
 from datetime import datetime
+import json
 
 from ..models.database import get_db
 from ..models.models import DetectionResult
@@ -50,7 +51,27 @@ async def detect_fake_content(
         
         # TODO: Replace with actual ML model prediction
         # For now, use the ML service placeholder
-        detection_result = await ml_service.predict(file_path)
+        # detection_result = await ml_service.predict(file_path)
+        detection_result = await ml_service.test_single_image(file_path, os.environ.get("API_URL"))
+        
+        # Parse details to extract model_version
+        model_version = "v1.0"  # Default value
+        details_str = detection_result.get("details", "")
+        if details_str:
+            try:
+                # Try to parse the string back to JSON to extract model_version
+                if details_str.startswith('{') and details_str.endswith('}'):
+                    try:
+                        details_json = eval(details_str)
+                        model_version = details_json.get("model_version", "v1.0")
+                    except:
+                        try:
+                            details_json = json.loads(details_str)
+                            model_version = details_json.get("model_version", "v1.0")
+                        except:
+                            pass
+            except:
+                pass
         
         processing_time = time.time() - start_time
         
@@ -63,7 +84,7 @@ async def detect_fake_content(
             is_fake=detection_result["is_fake"],
             confidence_score=detection_result["confidence"],
             processing_time=round(processing_time, 4),
-            model_version="v1.0",
+            model_version=model_version,  # Use extracted model_version from details
             analysis_details=detection_result.get("details", "")
         )
         

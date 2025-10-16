@@ -9,8 +9,9 @@ python-dotenv==1.0.0
 pydantic==2.5.0
 torch>=2.2.0
 torchvision>=0.17.0
-numpy==1.24.3
+numpy
 opencv-python==4.8.1.78
 aiofiles==23.2.0
 pytest==7.4.3
 pytest-asyncio==0.21.1
+requests
