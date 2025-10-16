@@ -13,36 +13,36 @@ const Footer = () => {
               <span className="text-xl font-bold">DeepSpear AI</span>
             </div>
             <p className="text-gray-400 mb-4 max-w-md">
-              Advanced AI-powered fake content detection service. 
-              Protecting digital integrity with cutting-edge technology.
+              고급 AI 기반 가짜 콘텐츠 탐지 서비스.
+              최첨단 기술로 디지털 무결성을 보호합니다.
             </p>
             <p className="text-sm text-gray-500">
-              Don't get juked by AI - Trust DeepSpear AI for authentic content verification.
+              AI에게 속지 마세요 - 정확한 콘텐츠 검증은 딥스피어 AI를 믿으세요.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4">빠른 링크</h3>
             <ul className="space-y-2">
               <li>
                 <a href="/" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Home
+                  홈
                 </a>
               </li>
               <li>
                 <a href="/detect" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Detect Content
+                  콘텐츠 탐지
                 </a>
               </li>
               <li>
                 <a href="#about" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  About Us
+                  회사 소개
                 </a>
               </li>
               <li>
                 <a href="#privacy" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Privacy Policy
+                  개인정보처리방침
                 </a>
               </li>
             </ul>
@@ -50,7 +50,7 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Connect</h3>
+            <h3 className="text-lg font-semibold mb-4">연결</h3>
             <div className="flex space-x-4">
               <a
                 href="#"
@@ -79,7 +79,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} DeepSpear AI. All rights reserved.
+            © {new Date().getFullYear()} 딥스피어 AI. 모든 권리 보유.
           </p>
         </div>
       </div>

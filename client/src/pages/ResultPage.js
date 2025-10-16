@@ -54,7 +54,7 @@ const ResultPage = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading analysis results...</p>
+          <p className="text-gray-600">분석 결과 로딩 중...</p>
         </div>
       </div>
     );
@@ -65,14 +65,14 @@ const ResultPage = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
           <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Result</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">결과 로딩 오류</h1>
           <p className="text-gray-600 mb-6">{error}</p>
           <Link
             to="/detect"
             className="btn-primary inline-flex items-center space-x-2"
           >
             <ArrowLeft className="h-5 w-5" />
-            <span>Try Again</span>
+            <span>다시 시도</span>
           </Link>
         </div>
       </div>
@@ -83,7 +83,7 @@ const ResultPage = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600">No result found</p>
+          <p className="text-gray-600">결과를 찾을 수 없습니다</p>
         </div>
       </div>
     );
@@ -101,11 +101,11 @@ const ResultPage = () => {
             className="inline-flex items-center space-x-2 text-primary-600 hover:text-primary-700 transition-colors duration-200 mb-4"
           >
             <ArrowLeft className="h-5 w-5" />
-            <span>Analyze Another Image</span>
+            <span>다른 이미지 분석</span>
           </Link>
           
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-            Detection Results
+            탐지 결과
           </h1>
         </div>
 
@@ -129,19 +129,19 @@ const ResultPage = () => {
                 </div>
                 
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                  {result.is_fake ? 'Potentially Fake' : 'Likely Authentic'}
+                  {result.is_fake ? '가짜일 가능성' : '진짜일 가능성'}
                 </h2>
                 
                 <p className="text-lg text-gray-600 mb-4">
                   {result.is_fake 
-                    ? 'This image appears to be AI-generated or manipulated'
-                    : 'This image appears to be authentic'
+                    ? '이 이미지는 AI로 생성되었거나 조작된 것으로 보입니다'
+                    : '이 이미지는 진짜인 것으로 보입니다'
                   }
                 </p>
 
                 <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700">Confidence Score</span>
+                    <span className="text-sm font-medium text-gray-700">신뢰도 점수</span>
                     <span className={`text-2xl font-bold ${getConfidenceColor(result.confidence)}`}>
                       {confidencePercentage}%
                     </span>
@@ -168,40 +168,40 @@ const ResultPage = () => {
             >
               <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center space-x-2">
                 <BarChart3 className="h-5 w-5" />
-                <span>Analysis Details</span>
+                <span>분석 세부사항</span>
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">File Name:</span>
+                    <span className="text-gray-600">파일명:</span>
                     <span className="font-medium text-gray-900">{result.filename}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">File Size:</span>
+                    <span className="text-gray-600">파일 크기:</span>
                     <span className="font-medium text-gray-900">
                       {(result.file_size / 1024 / 1024).toFixed(2)} MB
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">File Type:</span>
+                    <span className="text-gray-600">파일 형식:</span>
                     <span className="font-medium text-gray-900">{result.mime_type}</span>
                   </div>
                 </div>
                 
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Processing Time:</span>
-                    <span className="font-medium text-gray-900">{result.processing_time}s</span>
+                    <span className="text-gray-600">처리 시간:</span>
+                    <span className="font-medium text-gray-900">{result.processing_time}초</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Model Version:</span>
+                    <span className="text-gray-600">모델 버전:</span>
                     <span className="font-medium text-gray-900">{result.model_version}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Analysis Date:</span>
+                    <span className="text-gray-600">분석 날짜:</span>
                     <span className="font-medium text-gray-900">
-                      {new Date(result.created_at).toLocaleDateString()}
+                      {new Date(result.created_at).toLocaleDateString('ko-KR')}
                     </span>
                   </div>
                 </div>
@@ -218,21 +218,21 @@ const ResultPage = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">액션</h3>
               <div className="space-y-3">
                 <button className="w-full btn-secondary flex items-center justify-center space-x-2">
                   <Download className="h-4 w-4" />
-                  <span>Download Report</span>
+                  <span>보고서 다운로드</span>
                 </button>
                 <button className="w-full btn-secondary flex items-center justify-center space-x-2">
                   <Share className="h-4 w-4" />
-                  <span>Share Result</span>
+                  <span>결과 공유</span>
                 </button>
                 <Link
                   to="/detect"
                   className="w-full btn-primary flex items-center justify-center space-x-2"
                 >
-                  <span>Analyze Another</span>
+                  <span>다른 이미지 분석</span>
                 </Link>
               </div>
             </motion.div>
@@ -247,10 +247,10 @@ const ResultPage = () => {
               <div className="flex items-start space-x-3">
                 <Info className="h-6 w-6 text-blue-600 flex-shrink-0 mt-1" />
                 <div>
-                  <h4 className="font-semibold text-blue-900 mb-2">How it works</h4>
+                  <h4 className="font-semibold text-blue-900 mb-2">작동 방식</h4>
                   <p className="text-sm text-blue-800">
-                    Our AI analyzes various image characteristics including compression artifacts, 
-                    pixel patterns, and statistical anomalies to determine authenticity.
+                    우리의 AI는 압축 아티팩트, 픽셀 패턴, 통계적 이상 등 다양한 이미지 특성을 
+                    분석하여 진위를 판별합니다.
                   </p>
                 </div>
               </div>
@@ -266,9 +266,9 @@ const ResultPage = () => {
               <div className="flex items-center space-x-3">
                 <Clock className="h-8 w-8 text-gray-400" />
                 <div>
-                  <p className="text-sm text-gray-600">Processing completed in</p>
+                  <p className="text-sm text-gray-600">처리 완료 시간</p>
                   <p className="text-lg font-semibold text-gray-900">
-                    {result.processing_time} seconds
+                    {result.processing_time} 초
                   </p>
                 </div>
               </div>

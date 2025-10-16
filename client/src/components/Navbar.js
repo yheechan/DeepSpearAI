@@ -27,13 +27,13 @@ const Navbar = () => {
               to="/"
               className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium"
             >
-              Home
+              홈
             </Link>
             <Link
               to="/detect"
               className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium"
             >
-              Detect Fake Content
+              가짜 콘텐츠 탐지
             </Link>
           </div>
 
@@ -61,14 +61,14 @@ const Navbar = () => {
                 className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium px-2 py-1"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Home
+                홈
               </Link>
               <Link
                 to="/detect"
                 className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-center"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Detect Fake Content
+                가짜 콘텐츠 탐지
               </Link>
             </div>
           </div>

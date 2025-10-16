@@ -28,14 +28,14 @@ api.interceptors.response.use(
     
     if (error.response) {
       // Server responded with error status
-      const message = error.response.data?.detail || error.response.data?.message || 'Server error';
+      const message = error.response.data?.detail || error.response.data?.message || '서버 오류';
       throw new Error(message);
     } else if (error.request) {
       // Request was made but no response received
-      throw new Error('Network error - please check your connection');
+      throw new Error('네트워크 오류 - 연결 상태를 확인해주세요');
     } else {
       // Something else happened
-      throw new Error('Request failed');
+      throw new Error('요청 실패');
     }
   }
 );

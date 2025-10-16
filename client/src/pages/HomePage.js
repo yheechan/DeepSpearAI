@@ -7,18 +7,18 @@ const HomePage = () => {
   const features = [
     {
       icon: <Shield className="h-8 w-8" />,
-      title: "Advanced Detection",
-      description: "State-of-the-art AI models trained to detect sophisticated fake content with high accuracy."
+      title: "고급 탐지 기능",
+      description: "정교한 가짜 콘텐츠를 높은 정확도로 탐지하도록 훈련된 최첨단 AI 모델입니다."
     },
     {
       icon: <Zap className="h-8 w-8" />,
-      title: "Real-time Analysis",
-      description: "Get instant results with our optimized processing pipeline. Upload and analyze in seconds."
+      title: "실시간 분석",
+      description: "최적화된 처리 파이프라인으로 즉시 결과를 확인하세요. 몇 초 만에 업로드하고 분석할 수 있습니다."
     },
     {
       icon: <Eye className="h-8 w-8" />,
-      title: "Detailed Insights",
-      description: "Comprehensive analysis with confidence scores and detailed explanations of detection results."
+      title: "상세한 인사이트",
+      description: "신뢰도 점수와 탐지 결과에 대한 자세한 설명이 포함된 종합적인 분석을 제공합니다."
     }
   ];
 
@@ -34,8 +34,8 @@ const HomePage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              Don't get{' '}
-              <span className="text-gradient">juked by AI</span>
+              AI에게{' '}
+              <span className="text-gradient">속지 마세요</span>
             </motion.h1>
             
             <motion.p 
@@ -44,8 +44,8 @@ const HomePage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Advanced AI-powered fake content detection service. 
-              Verify authenticity with cutting-edge deep learning technology.
+              고급 AI 기반 가짜 콘텐츠 탐지 서비스.
+              최첨단 딥러닝 기술로 진위를 확인하세요.
             </motion.p>
             
             <motion.div
@@ -58,12 +58,12 @@ const HomePage = () => {
                 to="/detect"
                 className="btn-primary inline-flex items-center space-x-2 text-lg px-8 py-4"
               >
-                <span>Detect Fake Content</span>
+                <span>가짜 콘텐츠 탐지</span>
                 <ArrowRight className="h-5 w-5" />
               </Link>
               
               <button className="btn-secondary text-lg px-8 py-4">
-                Learn More
+                더 알아보기
               </button>
             </motion.div>
           </div>
@@ -75,10 +75,10 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose DeepSpear AI?
+              딥스피어 AI를 선택하는 이유는?
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Our advanced technology provides reliable, fast, and accurate fake content detection.
+              우리의 고급 기술은 신뢰할 수 있고 빠르며 정확한 가짜 콘텐츠 탐지를 제공합니다.
             </p>
           </div>
 
@@ -111,16 +111,16 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Ready to Verify Your Content?
+              콘텐츠 검증을 시작할 준비가 되셨나요?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Upload your image and get instant AI-powered fake content detection results.
+              이미지를 업로드하고 즉시 AI 기반 가짜 콘텐츠 탐지 결과를 확인하세요.
             </p>
             <Link
               to="/detect"
               className="bg-primary-600 hover:bg-primary-700 text-white font-medium py-4 px-8 rounded-lg transition-colors duration-200 inline-flex items-center space-x-2 text-lg"
             >
-              <span>Start Detection</span>
+              <span>탐지 시작</span>
               <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
