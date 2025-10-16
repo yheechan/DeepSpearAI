@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Shield } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,7 +15,11 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <Shield className="h-8 w-8 text-primary-600" />
+            <img 
+              src="/images/logos/logo_transparent.png" 
+              alt="딥스피어 AI 로고" 
+              className="h-12 w-12 object-contain"
+            />
             <span className="text-xl font-bold text-gray-900">
               DeepSpear AI
             </span>

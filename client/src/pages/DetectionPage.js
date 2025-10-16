@@ -12,6 +12,7 @@ const DetectionPage = () => {
   const [error, setError] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   
   const navigate = useNavigate();
 
@@ -42,12 +43,12 @@ const DetectionPage = () => {
         const url = URL.createObjectURL(compressedFile);
         setPreviewUrl(url);
         
-        console.log('원본 파일 크기:', (file.size / 1024 / 1024).toFixed(2), 'MB');
-        console.log('압축된 파일 크기:', (compressedFile.size / 1024 / 1024).toFixed(2), 'MB');
+        console.log('Original file size:', (file.size / 1024 / 1024).toFixed(2), 'MB');
+        console.log('Compressed file size:', (compressedFile.size / 1024 / 1024).toFixed(2), 'MB');
         
       } catch (compressionError) {
-        console.error('이미지 압축 실패:', compressionError);
-        // 압축 실패시 원본 파일로 대체
+        console.error('Image compression failed:', compressionError);
+        // Fallback to original file if compression fails
         setSelectedFile(file);
         setError('');
         const url = URL.createObjectURL(file);
@@ -68,7 +69,7 @@ const DetectionPage = () => {
 
   const handleUpload = async () => {
     if (!selectedFile) {
-      setError('먼저 파일을 선택해주세요');
+      setError('Please select a file first');
       return;
     }
 
@@ -101,7 +102,7 @@ const DetectionPage = () => {
 
     } catch (err) {
       setUploadState('error');
-      setError(err.message || '업로드 실패. 다시 시도해주세요.');
+      setError(err.message || 'Upload failed. Please try again.');
       setUploadProgress(0);
     }
   };
@@ -111,6 +112,7 @@ const DetectionPage = () => {
     setUploadProgress(0);
     setError('');
     setSelectedFile(null);
+    setAgreedToTerms(false);
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
       setPreviewUrl('');
@@ -122,12 +124,29 @@ const DetectionPage = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            가짜 콘텐츠 탐지
+            딥페이크 및 AI 생성 콘텐츠 탐지
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            이미지를 업로드하여 AI가 생성한 것인지 진짜인지 분석해보세요. 
-            우리의 고급 탐지 시스템이 상세한 결과를 제공합니다.
+            이미지를 업로드하여 AI로 생성되었는지 분석해보세요. JPG, PNG, WEBP 형식을 지원하며, 최대 50MB까지 업로드 가능합니다.
           </p>
+        </div>
+
+        {/* Agreement Checkbox */}
+        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg max-w-2xl mx-auto">
+          <label className="flex items-start space-x-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={agreedToTerms}
+              onChange={(e) => setAgreedToTerms(e.target.checked)}
+              className="mt-1 h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+            <div className="text-sm text-gray-700">
+              <span className="font-medium">개인정보 처리 동의</span>
+              <p className="mt-1">
+                본 서비스에 업로드되는 이미지 파일 외에는 개인 정보를 수집하지 않으며, 업로드된 이미지는 AI기술 개선 및 가짜 콘텐츠 탐지 정확도 향상을 위한 딥스피어 AI의 "AI기반 가짜 콘텐츠 탐지 엔진 개발"에 활용될 수 있음에 동의합니다.
+              </p>
+            </div>
+          </label>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -135,7 +154,7 @@ const DetectionPage = () => {
           <div className="space-y-6">
             <div className="card">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                이미지 업로드
+                Upload Image
               </h2>
               
               {/* Dropzone */}
@@ -172,7 +191,7 @@ const DetectionPage = () => {
                         <p className="text-lg font-medium text-gray-700">
                           {isDragActive
                             ? '여기에 이미지를 놓으세요'
-                            : '이미지를 드래그하여 놓거나 클릭하여 선택하세요'
+                            : '이미지를 여기에 드래그하거나 클릭하여 선택하세요'
                           }
                         </p>
                         <p className="text-sm text-gray-500">
@@ -212,7 +231,7 @@ const DetectionPage = () => {
               <div className="flex space-x-4">
                 <button
                   onClick={handleUpload}
-                  disabled={!selectedFile || uploadState === 'uploading'}
+                  disabled={!selectedFile || !agreedToTerms || uploadState === 'uploading'}
                   className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                 >
                   {uploadState === 'uploading' ? (
@@ -239,7 +258,7 @@ const DetectionPage = () => {
                     disabled={uploadState === 'uploading'}
                     className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    재설정
+                    초기화
                   </button>
                 )}
               </div>
@@ -250,7 +269,7 @@ const DetectionPage = () => {
           <div className="space-y-6">
             <div className="card">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                미리보기
+                Preview
               </h2>
               
               {previewUrl ? (
@@ -266,16 +285,16 @@ const DetectionPage = () => {
                     className="w-full h-64 object-cover rounded-lg border border-gray-200"
                   />
                   <div className="text-sm text-gray-600">
-                    <p><strong>이름:</strong> {selectedFile?.name}</p>
-                    <p><strong>크기:</strong> {selectedFile ? (selectedFile.size / 1024 / 1024).toFixed(2) : 0} MB</p>
-                    <p><strong>형식:</strong> {selectedFile?.type}</p>
+                    <p><strong>Name:</strong> {selectedFile?.name}</p>
+                    <p><strong>Size:</strong> {selectedFile ? (selectedFile.size / 1024 / 1024).toFixed(2) : 0} MB</p>
+                    <p><strong>Type:</strong> {selectedFile?.type}</p>
                   </div>
                 </motion.div>
               ) : (
                 <div className="h-64 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
                   <div className="text-center text-gray-500">
                     <ImageIcon className="h-12 w-12 mx-auto mb-2" />
-                    <p>선택된 이미지 없음</p>
+                    <p>No image selected</p>
                   </div>
                 </div>
               )}

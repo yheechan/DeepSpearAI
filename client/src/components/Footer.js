@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Github, Twitter, Mail } from 'lucide-react';
+import { Github, Twitter, Mail } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -9,7 +9,11 @@ const Footer = () => {
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <Shield className="h-8 w-8 text-primary-400" />
+              <img 
+                src="/images/logos/logo_transparent.png" 
+                alt="딥스피어 AI 로고" 
+                className="h-12 w-12 object-contain"
+              />
               <span className="text-xl font-bold">DeepSpear AI</span>
             </div>
             <p className="text-gray-400 mb-4 max-w-md">
