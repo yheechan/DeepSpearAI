@@ -7,10 +7,10 @@ const PricePage = () => {
   const [imageUrl, setImageUrl] = useState('');
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-white min-h-screen flex items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="text-center mb-16">
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
               현재는 무료입니다. <br/> 많이 써주세요.

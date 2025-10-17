@@ -71,6 +71,27 @@ const Navbar = () => {
                 홈
               </Link>
               <Link
+                to="/how-to-use"
+                className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium px-2 py-1"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                AI 생성 탐지
+              </Link>
+              <Link
+                to="/price"
+                className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium px-2 py-1"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                가격 안내
+              </Link>
+              <Link
+                to="/team-introduce"
+                className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium px-2 py-1"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                팀소개
+              </Link>
+              <Link
                 to="/detect"
                 className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-center"
                 onClick={() => setIsMenuOpen(false)}

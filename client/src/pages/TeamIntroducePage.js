@@ -20,8 +20,9 @@ const TeamIntroducePage = () => {
       name: '이준명',
       role: 'AI ENGINEER',
       image: '/images/team_introduce_page/lee_jun_myeong.webp',
-      organization: 'KAIST 전산학과 석사',
+      organization: 'KAIST 전산학부 석사',
       experience: [
+        '전기학부 NLPCL 연구실 출신',
         '컴퓨터 비전 논문 4편',
         '(1편 주저자, 3편 공저자)'
       ]
@@ -31,8 +32,9 @@ const TeamIntroducePage = () => {
       name: '양희찬',
       role: 'SW ENGINEER',
       image: '/images/team_introduce_page/yang_hee_chan.webp',
-      organization: 'KAIST 전산학과 석사',
+      organization: 'KAIST 전산학부 석사',
       experience: [
+        '전기학부 SWTV 연구실 출신',
         '소프트웨어 개발 전문',
         '(협업기업: LIG 넥스원, UN)'
       ]
