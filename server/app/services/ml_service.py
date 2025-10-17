@@ -276,3 +276,8 @@ class FakeDetectionService:
                     "confidence": 0.0,
                     "details": f"Error during prediction: {str(e)}"
                 }
+            return {
+                "is_fake": False,
+                "confidence": 0.0,
+                "details": f"Error during prediction: Unknown error"
+            }
