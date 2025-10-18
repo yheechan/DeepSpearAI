@@ -56,7 +56,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">연결</h3>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://www.linkedin.com/company/deepspear-ai/"
                 className="text-gray-400 hover:text-white transition-colors duration-200"
                 aria-label="LinkedIn"
               >
