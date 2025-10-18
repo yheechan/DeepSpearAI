@@ -16,7 +16,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img 
-              src="/images/logos/long_logo.png" 
+              src="/images/251019_logos/logo_lowercase.png" 
               alt="딥스피어 AI 로고" 
               className="h-12 w-30 object-contain"
             />

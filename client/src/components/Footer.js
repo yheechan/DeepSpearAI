@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github, Twitter, Mail } from 'lucide-react';
+import { Linkedin, Mail } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -8,13 +8,12 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
+            <div className="mb-4">
               <img 
-                src="/images/logos/logo_transparent.png" 
+                src="/images/251019_logos/white_logo.png" 
                 alt="딥스피어 AI 로고" 
-                className="h-10 w-10 object-contain"
+                className="h-12 w-30 object-contain"
               />
-              <span className="text-xl font-bold">DeepSpear AI</span>
             </div>
             <p className="text-gray-400 mb-4 max-w-md">
               고급 AI 기반 가짜 콘텐츠 탐지 서비스.
@@ -40,12 +39,12 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#about" className="text-gray-400 hover:text-white transition-colors duration-200">
+                <a href="/team-introduce" className="text-gray-400 hover:text-white transition-colors duration-200">
                   회사 소개
                 </a>
               </li>
               <li>
-                <a href="#privacy" className="text-gray-400 hover:text-white transition-colors duration-200">
+                <a href="/detect" className="text-gray-400 hover:text-white transition-colors duration-200">
                   개인정보처리방침
                 </a>
               </li>
@@ -59,16 +58,9 @@ const Footer = () => {
               <a
                 href="#"
                 className="text-gray-400 hover:text-white transition-colors duration-200"
-                aria-label="GitHub"
+                aria-label="LinkedIn"
               >
-                <Github className="h-6 w-6" />
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors duration-200"
-                aria-label="Twitter"
-              >
-                <Twitter className="h-6 w-6" />
+                <Linkedin className="h-6 w-6" />
               </a>
               <a
                 href="mailto:younghun1664@kaist.ac.kr"
