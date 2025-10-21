@@ -133,19 +133,19 @@ const ResultPage = () => {
                 </div>
                 
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                  {result.is_fake ? '가짜일 가능성' : '진짜일 가능성'}
+                  {result.is_fake 
+                    ? '이 이미지는 AI로 생성되었거나 조작된 것으로 보입니다'
+                    : '이 이미지는 원본 이미지인 것으로 보입니다'
+                  }
                 </h2>
                 
                 <p className="text-lg text-gray-600 mb-4">
-                  {result.is_fake 
-                    ? '이 이미지는 AI로 생성되었거나 조작된 것으로 보입니다'
-                    : '이 이미지는 진짜인 것으로 보입니다'
-                  }
+                  {result.is_fake ? '원본 이미지' : 'AI 제작 이미지'}
                 </p>
 
                 <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700">가짜일 가능성(확률)</span>
+                    <span className="text-sm font-medium text-gray-700">AI 제작 이미지 가능성(확률)</span>
                     <span className={`text-2xl font-bold ${getConfidenceColor(result.confidence)}`}>
                       {confidencePercentage}%
                     </span>
